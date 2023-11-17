@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react"
 
-function App() {
+
+export default function ToDoList() {
+  const [todo, setTodo] = useState([])
+  const [newTodo, setNewTodo] = useState("")
+
+
+  const inputChange = (e) => {
+    setNewTodo(e.target.value)
+  }
+
+
+  const addTodo = () => {
+    if(newTodo.trim() != ''){
+      const todoItem = {
+        id: Date.now(),
+        text: newTodo
+      }
+      setTodo([...todo, todoItem])
+
+      setNewTodo('')
+    }
+  }
+
+  const keyPress = (e) => {
+    if(e.key === "Enter"){
+      addTodo()
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Create a new task</h2>
+      <input placeholder="Task today?"
+      value = {newTodo}
+      onChange = {inputChange}
+      onKeyPress={keyPress}
+      />
+      <button onClick={addTodo}>Add task</button>
+      <ol>
+        {todo.map((todos) => 
+        <li key = {todos.id}>{todos.text}</li>
+        )}
+      </ol>
     </div>
   );
 }
-
-export default App;
